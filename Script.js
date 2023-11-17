@@ -1,7 +1,7 @@
 let numeroFilas = 0;
 let numeroColumnas = 0;
 
-function iniciarPartida(q) {
+function iniciarPartida() {
 
     let preguntaFilas = parseInt(prompt("Introduce el número de filas"));
     let preguntaColumnas = parseInt(prompt("Ahora introduce el número de columnas"));
@@ -19,7 +19,7 @@ function iniciarPartida(q) {
     }
 
     if (preguntaColumnas < 10) {
-        alert("El número mínimo para columnas es 10");
+        alert("El número mínimo para columnas es 10");z
         numeroColumnas = 10;
         console.log(numeroColumnas);
     } else if (preguntaColumnas > 30) {
@@ -29,8 +29,18 @@ function iniciarPartida(q) {
     } else {
         console.log(preguntaColumnas);
     }
+
 }
 
 function crearTaulell() {
-    
+    //Crear una taula dinamica del numero de files per el numero de columnes.
 }
+
+function setMines() {
+    //Establir la propietat mina a true un 17% de totes les caselles.
+}
+
+function calculaAdjacents() {
+    //Apuntarà el número de mines adjacents de cada casella en una custom html property data-num-mines inicialment a zero.
+}
+
