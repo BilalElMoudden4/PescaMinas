@@ -1,10 +1,20 @@
 let numeroFilas = 0;
 let numeroColumnas = 0;
+let tablero = [];
 
 const mina = "/Imagenes/mina20px.jpg";
 const fondo = "/Imagenes/fons20px.jpg";
 
+// Función principal que inicia el juego.
 function iniciarPartida() {
+    solicitarDimensiones();  // Solicita al usuario las dimensiones del tablero.
+    crearTablero();          // Crea la representación visual del tablero en HTML.
+    setMines();              // Coloca las minas en posiciones aleatorias.
+    calculaAdjacents();      // Calcula y asigna los valores de minas adyacentes.
+}
+
+// Función para obtener las dimensiones del tablero del usuario.
+function solicitarDimensiones() {
     let preguntaFilas = parseInt(prompt("Introduce el número de filas"));
     let preguntaColumnas = parseInt(prompt("Ahora introduce el número de columnas"));
 
@@ -27,10 +37,9 @@ function iniciarPartida() {
     } else {
         numeroColumnas = preguntaColumnas;
     }
-
-    crearTablero();
 }
 
+// Función para crear el tablero en HTML.
 function crearTablero() {
     let tablaHTML = "<table class='table' style='border:1px solid black'>";
 
@@ -49,12 +58,13 @@ function crearTablero() {
     document.getElementById("taulell").innerHTML = tablaHTML;
 }
 
+// Función para colocar minas en el tablero.
 function setMines() {
+    tablero = []; // Limpiamos el tablero 
+
     const totalCasillas = numeroFilas * numeroColumnas;
     const totalMinas = Math.ceil(0.17 * totalCasillas); // 17% de las casillas serán minas
 
-    // Crear una matriz que represente el tablero
-    const tablero = [];
     for (let i = 0; i < numeroFilas; i++) {
         tablero[i] = [];
         for (let j = 0; j < numeroColumnas; j++) {
@@ -69,19 +79,38 @@ function setMines() {
         // Establecer la propiedad mina a true para la posición (fila, columna)
         tablero[fila][columna].mina = true;
     }
-
-    // Aquí puedes trabajar con la matriz 'tablero' que ahora contiene la información de las minas
     console.log(tablero);
 }
 
-// Llamada a la función setMines
-setMines();
-
-
-
+// Función para calcular y asignar valores de minas adyacentes.
 function calculaAdjacents() {
-    // Apuntará el número de minas adyacentes de cada casilla en una propiedad personalizada data-num-mines inicialmente a cero.
+    for (let i = 0; i < numeroFilas; i++) {
+        for (let j = 0; j < numeroColumnas; j++) {
+            if (!esMina(i, j)) {
+                let numMinesAdjacents = 0;
+                for (let x = -1; x <= 1; x++) {
+                    for (let y = -1; y <= 1; y++) {
+                        const filaActual = i + x;
+                        const columnaActual = j + y;
+                        if (filaActual >= 0 && filaActual < numeroFilas && columnaActual >= 0 && columnaActual < numeroColumnas) {
+                            if (esMina(filaActual, columnaActual)) {
+                                numMinesAdjacents++;
+                            }
+                        }
+                    }
+                }
+                setMinesAdjacents(i, j, numMinesAdjacents);
+            }
+        }
+    }
 }
 
-// Llamada inicial para iniciar la partida.
+// Función para verificar si una celda contiene una mina.
+function esMina(x, y) {
+    return tablero[x][y].mina;
+}
+
+function setMinesAdjacents() {
+}
+
 iniciarPartida();
